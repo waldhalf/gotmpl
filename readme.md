@@ -1,5 +1,6 @@
-# Bookings
+# Go webser template
 
-The repository for [Building Modern Web Applications with Go](https://www.udemy.com/course/building-modern-web-applications-with-go/?referralCode=0415FB906223F10C6800).
-
-
+- Built in Go version 1.15
+- Uses [Chi router](https://github.com/go-chi/chi) router
+- Uses [SCS](https://github.com/alexedwards/scs/v2) session management by Alex Edwrads
+- Uses [nosurf](https://github.com/justinas/nosurf)
