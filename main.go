@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,18 +10,30 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/waldhalf/gotmpl/pkg/config"
 	"github.com/waldhalf/gotmpl/pkg/handlers"
+	"github.com/waldhalf/gotmpl/pkg/models"
 	"github.com/waldhalf/gotmpl/pkg/render"
 	"github.com/waldhalf/gotmpl/pkg/router"
 )
 
 
 func main() {
+	err := run()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
 	var app = config.GetConfig()
+
+	// Indicates that we want to put reservation in Session
+	gob.Register(models.Reservation{})
 
 	// Change to true when on production
 	app.InProduction = false
 
-	// Initializa seesion
+	// Initializa session
 	session := scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -34,6 +47,7 @@ func main() {
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
+		return err
 	}
 	app.TemplateCache = tc
 
@@ -55,4 +69,5 @@ func main() {
 
 	err = srv.ListenAndServe()
 	log.Fatal(err)
+	return nil
 }
