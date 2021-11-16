@@ -18,6 +18,7 @@ type AppConfig struct {
 	TemplateCache 	map[string]*template.Template
 	PortNumber 		string
 	InfoLog 		*log.Logger
+	ErrorLog		*log.Logger
 	InProduction	bool
 	Session			*scs.SessionManager
 }

@@ -5,16 +5,20 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/waldhalf/gotmpl/pkg/config"
 	"github.com/waldhalf/gotmpl/pkg/handlers"
+	"github.com/waldhalf/gotmpl/pkg/helpers"
 	"github.com/waldhalf/gotmpl/pkg/models"
 	"github.com/waldhalf/gotmpl/pkg/render"
 	"github.com/waldhalf/gotmpl/pkg/router"
 )
 
+var infoLog 	*log.Logger
+var errorLog 	*log.Logger
 
 func main() {
 	err := run()
@@ -32,6 +36,14 @@ func run() error {
 
 	// Change to true when on production
 	app.InProduction = false
+
+	// Create an info logger
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+
+	// Create an error logger
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
 	// Initializa session
 	session := scs.New()
@@ -56,11 +68,9 @@ func run() error {
 	handlers.NewHandlers(repo)
 
 	render.NewTemplates(app)
+	helpers.NewHelpers(app)
 
-	// http.HandleFunc("/", handlers.Repo.Home)
-	// http.HandleFunc("/about", handlers.Repo.About)
 	fmt.Printf("Starting application on %v\n", app.PortNumber)
-	// _ = http.ListenAndServe(portNumber, nil)
 
 	srv := &http.Server{
 		Addr: app.PortNumber,

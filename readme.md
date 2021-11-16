@@ -19,3 +19,7 @@ fileServer := http.FileServer(http.Dir("./static/"))
 ```
 mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
 ```
+
+## 02 - Create a logger system
+
+## 03 - Connect to database with soda (part of gobuffalo)
