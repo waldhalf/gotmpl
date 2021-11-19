@@ -24,3 +24,4 @@ mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
 ## 03 - Create migrations with soda (part of gobuffalo)
 ## 04 - Create repository db + cleanup code
+## 05 - Create db function for rooms, reservation, restrictions
